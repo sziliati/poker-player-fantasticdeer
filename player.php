@@ -39,9 +39,15 @@ class Player
 			'cards' => array_merge($player['hole_cards'], $game_state['community_cards']),
 		];
 
-		$resp = $this->httpClient->get(self::RANKING_API, [
-			'form_params' => $cards,
-		]);
+		try {
+			$resp = $this->httpClient->get(self::RANKING_API, [
+				'form_params' => $cards,
+			]);
+		} catch (\Throwable $e) {
+			file_put_contents("php://stderr", $e->getMessage() . "\n");
+
+			return 0;
+		}
 
 		$ranking = json_decode($resp->getBody(), true);
 
