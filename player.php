@@ -41,7 +41,7 @@ class Player
 		// TODO: jó ötlet minden tétet tartani?
 		// SOLUTION: pre-flop strategy?
 		if (count($game_state['community_cards']) === 0) {
-			$decision = $this->preFlopStrategy($player['hole_cards']);
+			$decision = $this->preFlopStrategy->getAction($player['hole_cards']);
 			$bet = max($bet, $game_state['small_blind']);
 
 			switch ($decision) {
@@ -58,6 +58,10 @@ class Player
 					return $bet;
 
 				case 'fold':
+					return 0;
+
+				default:
+					$this->log('Invalid pre-flop strategy: '.$decision);
 					return 0;
 			}
 		}
