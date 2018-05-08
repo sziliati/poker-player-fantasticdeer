@@ -45,7 +45,7 @@ class Player
 				//'debug' => fopen("php://stderr", 'w+'),
 			]);
 		} catch (\Throwable $e) {
-			$this->log('Getting ranking failed: '.$e->getMessage());
+			$this->log('Getting ranking failed: ' . $e->getMessage());
 
 			return 0;
 		}
@@ -56,6 +56,11 @@ class Player
 
 		if ($ranking['rank'] > 2) {
 			return $player['stack'];
+		}
+
+		if ($bet > $player['stack'] * 0.2) {
+			$this->log(sprintf('Folding because the bet (%s) is larger than the allowed 20 percent threshold of our stack (%s)', $bet, $player['stack']));
+			return 0;
 		}
 
 		return $bet;
