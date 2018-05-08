@@ -35,7 +35,15 @@ class Player
 		// TODO: jó ötlet minden tétet tartani?
 		// SOLUTION: pre-flop strategy?
 		if (count($game_state['community_cards']) === 0) {
-			return max($bet, $game_state['small_blind']);
+			$bet = max($bet, $game_state['small_blind']);
+
+			if ($bet > $player['stack'] * 0.2) {
+				$this->log(sprintf('Folding pre-flop because the bet (%s) is larger than the allowed 20 percent threshold of our stack (%s)', $bet, $player['stack']));
+
+				return 0;
+			}
+
+			return $bet;
 		}
 
 		$ranking = $this->rankCards($player['hole_cards'], $game_state['community_cards']);
@@ -82,6 +90,7 @@ class Player
 			foreach ($communityCards as $communityCard) {
 				if ($playerCard['rank'] == $communityCard['rank']) {
 					$i++;
+
 					if ($i === 2) {
 						break 2;
 					}
