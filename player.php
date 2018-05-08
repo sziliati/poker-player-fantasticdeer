@@ -22,8 +22,7 @@ class Player
 	{
 		file_put_contents("php://stderr", var_export($game_state, true) . "\n");
 
-		$player = $game_state[$game_state['in_action']];
-
+		$player = $game_state['players'][$game_state['in_action']];
 
 		$bet = $game_state['current_buy_in'] - $player['bet'];
 
@@ -31,6 +30,7 @@ class Player
 			return 0;
 		}
 
+		// TODO: jó ötlet minden tétet tartani?
 		if (count($game_state['community_cards']) === 0) {
 			return max($bet, $game_state['small_blind']);
 		}
