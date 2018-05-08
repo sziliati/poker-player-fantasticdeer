@@ -50,6 +50,7 @@ class Player
 
 			if (
 				$decision === 'fold' &&
+				!($bet > $game_state['big_blind']) &&
 				(
 					($game_state['dealer'] + 1 % 4) == $game_state['in_action'] ||
 					($game_state['dealer'] + 2 % 4) == $game_state['in_action']
