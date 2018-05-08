@@ -61,9 +61,18 @@ class PreFlopStrategy
 
     public function __construct()
     {
-        sort($this->raise);
-        sort($this->limp);
-        sort($this->allin);
+        foreach ($this->raise as $key => $raise) {
+            sort($raise);
+            $this->raise[$key] = $raise;
+        }
+        foreach ($this->limp as $key => $limp) {
+            sort($limp);
+            $this->limp[$key] = $limp;
+        }
+        foreach ($this->allin as $key => $allin) {
+            sort($allin);
+            $this->allin[$key] = $allin;
+        }
     }
 
     /**
@@ -78,7 +87,7 @@ class PreFlopStrategy
 
         sort($cards);
 
-        if (in_array($cards, $this->raise)) {
+        if (in_array($cards, $this->allin)) {
             return 'allin';
         }
 
