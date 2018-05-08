@@ -1,14 +1,28 @@
 <?php
 
+use GuzzleHttp\Client;
+
 class Player
 {
-    const VERSION = "Default PHP folding player";
+	const VERSION = "Default PHP folding player";
 
-    public function betRequest($game_state)
-    {
-    	file_put_contents("php://stderr", var_export($game_state, true)."\n");
+	const RANKING_API = 'http://rainman.leanpoker.org/rank';
 
-    	$player = $game_state[$game_state['in_action']];
+	/**
+	 * @var Client
+	 */
+	private $httpClient;
+
+	public function __construct(Client $httpClient)
+	{
+		$this->httpClient = $httpClient;
+	}
+
+	public function betRequest($game_state)
+	{
+		file_put_contents("php://stderr", var_export($game_state, true) . "\n");
+
+		$player = $game_state[$game_state['in_action']];
 
 		$bet = $game_state['current_buy_in'] - $player['bet'];
 
@@ -16,18 +30,26 @@ class Player
 			return max($bet, $game_state['small_blind']);
 		}
 
-		foreach ($player['hole_cards'] as $card) {
-			foreach ($game_state['community_cards'] as $communityCard) {
-				if ($communityCard['rank'] === $card['rank']) {
-					return $game_state['pot'];
-				}
-			}
+		$cards = [
+			'cards' => array_merge($player['hole_cards'], $game_state['community_cards']),
+		];
+
+		$resp = $this->httpClient->get(self::RANKING_API, [
+			'form_params' => $cards,
+		]);
+
+		$ranking = json_decode($resp->getBody(), true);
+
+		file_put_contents("php://stderr", var_export($ranking, true) . "\n");
+
+		if ($ranking['rank'] > 2) {
+			return $player['stack'];
 		}
 
 		return $bet;
-    }
+	}
 
-    public function showdown($game_state)
-    {
-    }
+	public function showdown($game_state)
+	{
+	}
 }

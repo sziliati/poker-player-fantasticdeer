@@ -1,8 +1,10 @@
 <?php
 
+use GuzzleHttp\Client;
+
 require_once('player.php');
 
-$player = new Player();
+$player = new Player(new Client());
 
 switch($_POST['action'])
 {
