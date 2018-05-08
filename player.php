@@ -4,7 +4,7 @@ use GuzzleHttp\Client;
 
 class Player
 {
-	const VERSION = "Default PHP folding player";
+	const VERSION = "We tried";
 
 	const RANKING_API = 'http://rainman.leanpoker.org/rank';
 
