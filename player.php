@@ -20,13 +20,13 @@ class Player
 
 	public function betRequest($game_state)
 	{
-		file_put_contents("php://stderr", var_export($game_state, true) . "\n");
+		$this->log(var_export($game_state, true));
 
 		$player = $game_state['players'][$game_state['in_action']];
 
 		$bet = $game_state['current_buy_in'] - $player['bet'];
 
-		if ($bet < 0 ) {
+		if ($bet < 0) {
 			return 0;
 		}
 
@@ -45,14 +45,14 @@ class Player
 				//'debug' => fopen("php://stderr", 'w+'),
 			]);
 		} catch (\Throwable $e) {
-			file_put_contents("php://stderr", $e->getMessage() . "\n");
+			$this->log('Getting ranking failed: '.$e->getMessage());
 
 			return 0;
 		}
 
 		$ranking = json_decode($resp->getBody(), true);
 
-		file_put_contents("php://stderr", var_export($ranking, true) . "\n");
+		$this->log(var_export($ranking, true));
 
 		if ($ranking['rank'] > 2) {
 			return $player['stack'];
@@ -63,5 +63,10 @@ class Player
 
 	public function showdown($game_state)
 	{
+	}
+
+	private function log($line)
+	{
+		file_put_contents('php://stderr', $line . "\n");
 	}
 }
