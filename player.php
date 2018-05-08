@@ -90,7 +90,7 @@ class Player
 
 		$this->log(var_export($ranking, true));
 
-		if ($ranking['rank'] > 3 && $ranking['strength'] == 1) {
+		if ($ranking['rank'] > 3 && $ranking['strength'] == 2) {
 			return $player['stack'];
 		} else if ($ranking['rank'] > 2 && $ranking['strength'] == 2) {
 			return (int)($player['stack'] / 2);
