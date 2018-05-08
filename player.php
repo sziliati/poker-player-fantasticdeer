@@ -48,6 +48,7 @@ class Player
 				//case 'raise':
 				//	return $game_state['pot'];
                 case 'allin':
+                    return $player['stack'];
 				case 'raise':
 				case 'limp':
 					if ($bet > $player['stack'] * 0.1) {
