@@ -8,7 +8,7 @@ class Player
 
 	const RANKING_API = 'http://rainman.leanpoker.org/rank';
 
-	private $highCards = ["10", "J", "Q", "K", "A"];
+	const LIMP_THRESHOLD = 0.3;
 
 	/**
 	 * @var Client
@@ -44,6 +44,10 @@ class Player
 			$decision = $this->preFlopStrategy->getAction($player['hole_cards']);
 			$bet = max($bet, $game_state['minimum_raise']);
 
+			if ($bet > $player['stack'] * 0.7) {
+				$bet = $player['stack'];
+			}
+
 			if (
 				$decision === 'fold' &&
 				(
@@ -65,7 +69,7 @@ class Player
 
 				case 'raise':
 				case 'limp':
-					if ($bet > $player['stack'] * 0.1) {
+					if ($bet > $player['stack'] * self::LIMP_THRESHOLD) {
 						$this->log(sprintf('Folding pre-flop because the bet (%s) is larger than the allowed 20 percent threshold of our stack (%s)', $bet, $player['stack']));
 
 						return 0;
@@ -86,13 +90,13 @@ class Player
 
 		$this->log(var_export($ranking, true));
 
-		if ($ranking['rank'] > 2 && $ranking['strength'] == 2) {
-			return (int)($player['stack'] / 2);
-		} else if ($ranking['rank'] > 3 && $ranking['strength'] == 1) {
+		if ($ranking['rank'] > 3 && $ranking['strength'] == 1) {
 			return $player['stack'];
+		} else if ($ranking['rank'] > 2 && $ranking['strength'] == 2) {
+			return (int)($player['stack'] / 2);
 		}
 
-		if ($bet > $player['stack'] * 0.2) {
+		if ($bet > $player['stack'] * self::LIMP_THRESHOLD) {
 			$this->log(sprintf('Folding because the bet (%s) is larger than the allowed 20 percent threshold of our stack (%s)', $bet, $player['stack']));
 
 			return 0;
