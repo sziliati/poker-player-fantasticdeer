@@ -42,7 +42,7 @@ class Player
 		try {
 			$resp = $this->httpClient->get(self::RANKING_API, [
 				'form_params' => $cards,
-				'debug' => STDERR,
+				'debug' => fopen("php://stderr", 'w+'),
 			]);
 		} catch (\Throwable $e) {
 			file_put_contents("php://stderr", $e->getMessage() . "\n");
