@@ -58,7 +58,7 @@ class Player
 				//case 'raise':
 				//	return $game_state['pot'];
                 case 'allin':
-                    return $player['stack'];
+                    return (int) ($player['stack'] / 2);
 
 				case 'blind':
 					return $bet;
