@@ -59,15 +59,20 @@ class Player
 			}
 
 			switch ($decision) {
-				//case 'raise':
-				//	return $game_state['pot'];
-                case 'allin':
+				case 'raise':
+					if ($game_state['pot'] > $player['stack'] * 0.7) {
+						return $player['stack'];
+					}
+
+					return $game_state['pot'];
+
+				case 'allin':
                     return (int) ($player['stack'] / 2);
 
 				case 'blind':
 					return $bet;
 
-				case 'raise':
+				//case 'raise':
 				case 'limp':
 					if ($bet > $player['stack'] * self::LIMP_THRESHOLD) {
 						$this->log(sprintf('Folding pre-flop because the bet (%s) is larger than the allowed 20 percent threshold of our stack (%s)', $bet, $player['stack']));
