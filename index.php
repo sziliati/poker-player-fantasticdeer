@@ -2,6 +2,8 @@
 
 use GuzzleHttp\Client;
 
+require_once __DIR__.'/vendor/autoload.php';
+
 require_once('player.php');
 
 $player = new Player(new Client());
