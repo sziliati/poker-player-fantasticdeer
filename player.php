@@ -8,7 +8,7 @@ class Player
 
 	const RANKING_API = 'http://rainman.leanpoker.org/rank';
 
-	const LIMP_THRESHOLD = 0.3;
+	const LIMP_THRESHOLD = 0.2;
 
 	/**
 	 * @var Client
