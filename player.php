@@ -74,6 +74,10 @@ class Player
 
 				//case 'raise':
 				case 'limp':
+					if ($game_state['bet_index'] > 6) {
+						return 0;
+					}
+
 					if ($bet > $player['stack'] * self::LIMP_THRESHOLD) {
 						$this->log(sprintf('Folding pre-flop because the bet (%s) is larger than the allowed 20 percent threshold of our stack (%s)', $bet, $player['stack']));
 
