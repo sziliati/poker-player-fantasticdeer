@@ -8,6 +8,8 @@ class Player
 
 	const RANKING_API = 'http://rainman.leanpoker.org/rank';
 
+	private $highCards = ["10", "J", "Q", "K", "A"];
+
 	/**
 	 * @var Client
 	 */
@@ -54,7 +56,17 @@ class Player
 
 		$this->log(var_export($ranking, true));
 
-		if ($ranking['rank'] > 2) {
+		$i = 0;
+
+		foreach ($player['hole_cards'] as $playerCard) {
+			foreach ($ranking['cards_used'] as $userdCards) {
+				if ($playerCard['rank'] == $userdCards['rank']) {
+					$i++;
+				}
+			}
+		}
+
+		if ($ranking['rank'] > 2 && $i == 2) {
 			return $player['stack'];
 		}
 
