@@ -45,9 +45,10 @@ class Player
 			$bet = max($bet, $game_state['small_blind']);
 
 			switch ($decision) {
-				case 'raise':
-					return $game_state['pot'];
+				//case 'raise':
+				//	return $game_state['pot'];
 
+				case 'raise':
 				case 'limp':
 					if ($bet > $player['stack'] * 0.1) {
 						$this->log(sprintf('Folding pre-flop because the bet (%s) is larger than the allowed 20 percent threshold of our stack (%s)', $bet, $player['stack']));
