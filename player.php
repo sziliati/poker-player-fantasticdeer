@@ -36,7 +36,7 @@ class Player
 		}
 
 		$cards = [
-			'cards' => array_merge($player['hole_cards'], $game_state['community_cards']),
+			'cards' => json_encode(array_merge($player['hole_cards'], $game_state['community_cards'])),
 		];
 
 		try {
