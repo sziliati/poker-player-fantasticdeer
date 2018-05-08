@@ -6,7 +6,7 @@ class Player
 
     public function betRequest($game_state)
     {
-        return 5;
+        return $game_state['small_blind'];
     }
 
     public function showdown($game_state)
