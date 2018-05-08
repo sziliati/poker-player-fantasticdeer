@@ -6,6 +6,8 @@ class Player
 
     public function betRequest($game_state)
     {
+    	file_put_contents(STDOUT, var_export($game_state));
+
         return $game_state['small_blind'];
     }
 
