@@ -55,6 +55,7 @@ class PreFlopStrategy
         array('Q', '8'),
         array('J', '8'),
         array('10', '8'),
+        array('10', '9'),
         array('9', '8'),
     );
 
