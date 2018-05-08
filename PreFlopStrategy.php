@@ -34,7 +34,20 @@ class PreFlopStrategy
 
     );
 
-    protected $limp = array();
+    protected $limp = array(
+        array('6', '6'),
+        array('5', '5'),
+        array('A', '9'),
+        array('A', '8'),
+        array('A', '7'),
+        array('A', '6'),
+        array('K', '9'),
+        array('Q', '9'),
+        array('Q', '8'),
+        array('J', '8'),
+        array('10', '8'),
+        array('9', '8'),
+    );
 
     public function __construct()
     {
