@@ -44,11 +44,25 @@ class Player
 			$decision = $this->preFlopStrategy->getAction($player['hole_cards']);
 			$bet = max($bet, $game_state['minimum_raise']);
 
+			if (
+				$decision === 'fold' &&
+				(
+					($game_state['dealer'] + 1 % 4) == $game_state['in_action'] ||
+					($game_state['dealer'] + 2 % 4) == $game_state['in_action']
+				)
+			){
+				$decision = 'blind';
+			}
+
 			switch ($decision) {
 				//case 'raise':
 				//	return $game_state['pot'];
                 case 'allin':
                     return $player['stack'];
+
+				case 'blind':
+					return $bet;
+
 				case 'raise':
 				case 'limp':
 					if ($bet > $player['stack'] * 0.1) {
