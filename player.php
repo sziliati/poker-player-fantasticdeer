@@ -24,7 +24,12 @@ class Player
 
 		$player = $game_state[$game_state['in_action']];
 
+
 		$bet = $game_state['current_buy_in'] - $player['bet'];
+
+		if ($bet < 0 ) {
+			return 0;
+		}
 
 		if (count($game_state['community_cards']) === 0) {
 			return max($bet, $game_state['small_blind']);
