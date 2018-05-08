@@ -42,7 +42,7 @@ class Player
 		// SOLUTION: pre-flop strategy?
 		if (count($game_state['community_cards']) === 0) {
 			$decision = $this->preFlopStrategy->getAction($player['hole_cards']);
-			$bet = max($bet, $game_state['small_blind']);
+			$bet = max($bet, $game_state['minimum_raise']);
 
 			switch ($decision) {
 				//case 'raise':
