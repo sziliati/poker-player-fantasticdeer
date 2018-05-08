@@ -15,9 +15,15 @@ class Player
 	 */
 	private $httpClient;
 
+	/**
+	 * @var PreFlopStrategy
+	 */
+	private $preFlopStrategy;
+
 	public function __construct(Client $httpClient)
 	{
 		$this->httpClient = $httpClient;
+		$this->preFlopStrategy = new PreFlopStrategy();
 	}
 
 	public function betRequest($game_state)
@@ -35,15 +41,25 @@ class Player
 		// TODO: jó ötlet minden tétet tartani?
 		// SOLUTION: pre-flop strategy?
 		if (count($game_state['community_cards']) === 0) {
+			$decision = $this->preFlopStrategy($player['hole_cards']);
 			$bet = max($bet, $game_state['small_blind']);
 
-			if ($bet > $player['stack'] * 0.1) {
-				$this->log(sprintf('Folding pre-flop because the bet (%s) is larger than the allowed 20 percent threshold of our stack (%s)', $bet, $player['stack']));
+			switch ($decision) {
+				case 'raise':
+					return $game_state['pot'];
 
-				return 0;
+				case 'limp':
+					if ($bet > $player['stack'] * 0.1) {
+						$this->log(sprintf('Folding pre-flop because the bet (%s) is larger than the allowed 20 percent threshold of our stack (%s)', $bet, $player['stack']));
+
+						return 0;
+					}
+
+					return $bet;
+
+				case 'fold':
+					return 0;
 			}
-
-			return $bet;
 		}
 
 		$ranking = $this->rankCards($player['hole_cards'], $game_state['community_cards']);
