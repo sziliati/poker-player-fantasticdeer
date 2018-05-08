@@ -47,7 +47,7 @@ class Player
 			switch ($decision) {
 				//case 'raise':
 				//	return $game_state['pot'];
-
+                case 'allin':
 				case 'raise':
 				case 'limp':
 					if ($bet > $player['stack'] * 0.1) {

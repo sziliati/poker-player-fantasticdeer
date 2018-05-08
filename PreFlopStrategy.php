@@ -8,6 +8,15 @@
 
 class PreFlopStrategy
 {
+    protected $allin = array(
+        array('A', 'A'),
+        array('A', 'K'),
+        array('K', 'K'),
+        array('Q', 'Q'),
+        array('J', 'J'),
+        array('10', '10'),
+    );
+
     protected $raise = array(
         array('A', 'A'),
         array('K', 'K'),
@@ -53,10 +62,11 @@ class PreFlopStrategy
     {
         sort($this->raise);
         sort($this->limp);
+        sort($this->allin);
     }
 
     /**
-     * return raise, limp, fold
+     * return raise, limp, fold, allin
      */
     public function getAction($hand)
     {
@@ -66,6 +76,10 @@ class PreFlopStrategy
         }
 
         sort($cards);
+
+        if (in_array($cards, $this->raise)) {
+            return 'allin';
+        }
 
         if (in_array($cards, $this->raise)) {
             return 'raise';
